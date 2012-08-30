@@ -35,6 +35,7 @@ func read_stories(filename string) []string {
 
 func mark_posted(guids []string) bool {
         errs := 0
+        fmt.Printf("[+] attempting to mark %d stories as posted...", len(guids))
         for _, guid := range guids {
                 if err := lobsterdb.PostStory(guid); err != nil {
                         errs++
