@@ -5,24 +5,40 @@ import (
         "golobsters/lobsterdb"
         "code.google.com/p/gosqlite/sqlite"
         "log"
+        "os"
 )
 
 func read_stories(filename string) []string {
-        db, err = sqlite.Open(filename)
+        db, err := sqlite.Open(filename)
         if err != nil {
                 log.Fatal("[!] couldn't open filename")
         }
 
         defer db.Close()
 
-        res, err := sqlite.Exec("select guid from posted")
+        res, err := db.Exec("select guid from posted")
         if err != nil {
                 log.Fatal("[!] could select from posted")
         }
 
-        guids := make([]string, res.RowsAffected())
+        n, _ := res.RowsAffected()
+        guids := make([]string, n) 
 
         return guids
+}
+
+func mark_posted(guids []string) bool {
+        errs := 0
+        for _, guid := range guids {
+                if err := lobsterdb.PostStory(guid); err != nil {
+                        errs++
+                        log.Println("[!] error posting story ", guid)
+                } else {
+                        fmt.Printff("[+] marking %s as posted.", guid)
+                }
+        }
+
+        return errs == 0
 }
 
 func main() {
