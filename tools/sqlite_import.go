@@ -60,6 +60,6 @@ func main() {
         }
 
         if !mark_posted(guids) {
-                log.Error("[!] error importing into postgres")
+                log.Printf("[!] error importing into postgres")
         }
 }
