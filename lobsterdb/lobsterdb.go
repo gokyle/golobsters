@@ -38,9 +38,9 @@ func StoryPosted(guid string) (bool, error) {
 		return true, err
 	}
 
-	if res.RowsAffected() > 1 {
+	if n, _ := res.RowsAffected(); n > 1 {
 		log.Printf("[!] lobsterdb %s has more than one row", name)
-	} else if res.RowsAffected() == 0 {
+	} else if n, _ := res.RowsAffected(); n == 0 {
 		return false, nil
 	}
 
@@ -65,7 +65,7 @@ func PostStory(guid string) error {
                 return err
         }
 
-        if res.RowsAffected() == 0 {
+        if n, _ := res.RowsAffected(); n == 0 {
                 log.Printf("[!] lobsterdb insert affects 0 rows")
                 return fmt.Errorf("insert affects 0 rows")
         }
