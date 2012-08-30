@@ -3,7 +3,7 @@ package main
 import (
         "fmt"
         "golobsters/lobsterdb"
-        "googlecode.com/hg/sqlite"
+        "code.google.com/p/gosqlite/"
         "log"
 )
 
