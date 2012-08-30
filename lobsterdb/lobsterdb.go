@@ -31,6 +31,7 @@ func StoryPosted(guid string) (bool, error) {
 		return true, err
 	}
 	defer db.Close()
+        log.Println("[+] lobsterdb connected to database (preparing select)")
 
 	res, err := db.Exec("select posted from posted where guid=$1")
 	if err != nil {
@@ -56,6 +57,8 @@ func PostStory(guid string) error {
 		return err
 	}
 	defer db.Close()
+        log.Printf("[+] lobsterdb connected to database (preparing insert)")
+
 
         res, err := db.Exec("insert into posted (guid, posted) values ($1, $2)",
                             guid, true)
