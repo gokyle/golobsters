@@ -49,7 +49,8 @@ func mark_posted(guids []string) bool {
 
 func main() {
         if len(os.Args) == 1 {
-                log.Fatal("no filename specified")
+                fmt.Println("[!] no filename specified")
+                os.Exit(1)
         }
 
         guids := read_stories(os.Args[1])
