@@ -39,7 +39,7 @@ func StoryPosted(guid string) (bool, error) {
 	}
 
 	if n, _ := res.RowsAffected(); n > 1 {
-		log.Printf("[!] lobsterdb %s has more than one row", name)
+		log.Printf("[!] lobsterdb %s has more than one row", guid)
 	} else if n, _ := res.RowsAffected(); n == 0 {
 		return false, nil
 	}
@@ -53,7 +53,7 @@ func PostStory(guid string) error {
 	if err != nil {
 		log.Printf("[!] lobsterdb couldn't open database connection: %s",
 			err)
-		return true, err
+		return err
 	}
 	defer db.Close()
 
