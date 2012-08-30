@@ -3,26 +3,32 @@ package main
 import (
         "fmt"
         "golobsters/lobsterdb"
-        "code.google.com/p/gosqlite/sqlite"
+        _ "github.com/mattn/go-sqlite3"
+	"database/sql"
         "log"
         "os"
 )
 
 func read_stories(filename string) []string {
-        db, err := sqlite.Open(filename)
+        db, err := sql.Open("sqlite3", filename)
         if err != nil {
-                log.Fatal("[!] couldn't open filename")
+                log.Fatal("[!] couldn't open filename: ", err)
         }
 
         defer db.Close()
 
-        res, err := db.Exec("select guid from posted")
+        rows, err := db.Query("select guid from posted")
         if err != nil {
                 log.Fatal("[!] could select from posted")
         }
 
-        n, _ := res.RowsAffected()
-        guids := make([]string, n) 
+        guids := make([]string, 0) 
+
+        for rows.Next() {
+                var guid string
+                rows.Scan(&guid)
+                guids = append(guids, guid)
+        }
 
         return guids
 }
@@ -34,7 +40,7 @@ func mark_posted(guids []string) bool {
                         errs++
                         log.Println("[!] error posting story ", guid)
                 } else {
-                        fmt.Printff("[+] marking %s as posted.", guid)
+                        fmt.Printf("[+] marking %s as posted.", guid)
                 }
         }
 
@@ -46,5 +52,8 @@ func main() {
                 log.Fatal("no filename specified")
         }
 
-        fmt.Println(read_stories(os.Args[1]))
+        guids := read_stories(os.Args[1])
+        if len(guids) == 0 {
+                log.Fatal("could not retrieve from the database")
+        }
 }
