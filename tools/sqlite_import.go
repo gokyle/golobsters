@@ -20,7 +20,7 @@ func read_stories(filename string) []string {
                 log.Fatal("[!] could select from posted")
         }
 
-        guids := (make []string, res.RowsAffected())
+        guids := make([]string, res.RowsAffected())
 
         return guids
 }
@@ -30,5 +30,5 @@ func main() {
                 log.Fatal("no filename specified")
         }
 
-        fmt.Println(read_stories(os.Args[1])
+        fmt.Println(read_stories(os.Args[1]))
 }
