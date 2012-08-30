@@ -57,4 +57,8 @@ func main() {
         if len(guids) == 0 {
                 log.Fatal("could not retrieve from the database")
         }
+
+        if !mark_posted(guids) {
+                log.Error("[!] error importing into postgres")
+        }
 }
