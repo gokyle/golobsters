@@ -17,9 +17,9 @@ func read_stories(filename string) []string {
 
 	defer db.Close()
 
-	rows, err := db.Query("select guid from posted")
+	rows, err := db.Query("select distinct guid from posted")
 	if err != nil {
-		log.Fatal("[!] could select from posted")
+		log.Fatal("[!] couldn't select from posted")
 	}
 
 	guids := make([]string, 0)
