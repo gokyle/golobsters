@@ -12,7 +12,7 @@ import (
 // ConnStringFromEnv loads the database credentials from the environment. 
 func ConnStringFromEnv() string {
 	return fmt.Sprintf(
-		"dbname=%s user=%s pass=%s host=%s port=%s sslmode=%s",
+		"dbname=%s user=%s password=%s host=%s port=%s sslmode=%s",
 		os.Getenv("PG_DBNAME"),
 		os.Getenv("PG_USER"),
 		os.Getenv("PG_PASS"),
