@@ -33,15 +33,23 @@ func StoryPosted(guid string) (bool, error) {
 	defer db.Close()
         log.Println("[+] lobsterdb connected to database (preparing select)")
 
-	res, err := db.Exec("select posted from posted where guid=$1", guid)
+        log.Printf("\t[*] select posted from posted where guid=%s\n", guid)
+	rows, err := db.Query("select posted from posted where guid=$1", guid)
 	if err != nil {
 		log.Printf("[!] lobsterdb select error: %s", err)
 		return true, err
 	}
 
-	if n, _ := res.RowsAffected(); n > 1 {
+        log.Println("[+] lobsterdb select query completed, retrieving results")
+        row_count := 0
+        for rows.Next() {
+                row_count++
+                log.Printf("\t[*] row %d\n", row_count)
+        }
+
+	if row_count > 1 {
 		log.Printf("[!] lobsterdb %s has more than one row", guid)
-	} else if n, _ := res.RowsAffected(); n == 0 {
+	} else if row_count == 0 { 
 		return false, nil
 	}
 
