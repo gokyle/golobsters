@@ -35,7 +35,7 @@ func read_stories(filename string) []string {
 
 func mark_posted(guids []string) bool {
 	errs := 0
-	fmt.Printf("[+] attempting to mark %d stories as posted...", len(guids))
+	fmt.Printf("[+] attempting to mark %d stories as posted...\n", len(guids))
 	for _, guid := range guids {
 		if posted, err := lobsterdb.StoryPosted(guid); err != nil {
 			log.Fatal("[!] error checking whether story was posted")
@@ -46,7 +46,7 @@ func mark_posted(guids []string) bool {
 				errs++
 				log.Println("[!] error posting story ", guid)
 			} else {
-				fmt.Printf("[+] marking %s as posted.", guid)
+				fmt.Printf("[+] marking %s as posted.\n", guid)
 			}
 		}
 	}
