@@ -33,7 +33,7 @@ func StoryPosted(guid string) (bool, error) {
 	defer db.Close()
         log.Println("[+] lobsterdb connected to database (preparing select)")
 
-	res, err := db.Exec("select posted from posted where guid=$1")
+	res, err := db.Exec("select posted from posted where guid=$1", guid)
 	if err != nil {
 		log.Printf("[!] lobsterdb select error: %s", err)
 		return true, err

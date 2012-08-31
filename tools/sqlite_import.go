@@ -38,7 +38,6 @@ func mark_posted(guids []string) bool {
 	fmt.Printf("[+] attempting to mark %d stories as posted...", len(guids))
 	for _, guid := range guids {
 		if posted, err := lobsterdb.StoryPosted(guid); err != nil {
-                        fmt.Println(
 			log.Fatal("[!] error checking whether story was posted")
 		} else if posted {
 			fmt.Printf("[*] %s already in db.\n")
