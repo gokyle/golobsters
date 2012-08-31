@@ -7,6 +7,7 @@ package main
 
 import (
 	"fmt"
+        "golobsters/bot"
 	"golobsters/lobsterdb"
 	"os"
 )
