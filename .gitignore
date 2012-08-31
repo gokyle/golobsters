@@ -1,0 +1,4 @@
+.*.sw?
+*.db
+*_env.sh
+tools/secret
