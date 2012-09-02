@@ -53,11 +53,14 @@ func validate_environment() {
 
 func init() {
 	validate_environment()
-	err := monitor.ConfigFromJson()
-	if err != nil {
-		fmt.Println("[!] error configuring monitor: ", err)
-		os.Exit(1)
+	monitor.ConfigFromEnv()
+	if !monitor.EmailEnabled() {
+		log.Fatal("[!] error configuring monitor: mail not configured")
 	}
+
+        if !monitor.PushoverEnabled() {
+                log.Fatal("[!] error configuring monitor: pushover not configured")
+        }
 }
 
 func main() {
