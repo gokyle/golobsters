@@ -43,7 +43,6 @@ func StoryPosted(guid string) (bool, error) {
 	row_count := 0
 	for rows.Next() {
 		row_count++
-		log.Printf("\t[*] row %d\n", row_count)
 	}
 
 	if row_count > 1 {
