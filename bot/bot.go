@@ -89,7 +89,7 @@ func (s story) process() error {
 		log.Printf("[!] bot StoryHandler failure: %s\n", err)
 		return err
 	} else if posted {
-		log.Printf("[+] bot skipping %s, already posted\n")
+		log.Printf("[+] bot skipping %s, already posted\n", s.guid)
 		return nil
 	}
 
@@ -111,6 +111,7 @@ func (s story) process() error {
 		}
 	}
 
+        log.Println("[+] bot successful update")
 	return nil
 }
 
@@ -164,7 +165,7 @@ func worker(id int8) {
 		err := s.process()
 		if err != nil {
 			log.Printf("[!] worker %d error processing story: %s",
-				err)
+				id, err)
 		}
 	}
 }
