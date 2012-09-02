@@ -94,7 +94,7 @@ func CountStories() int64 {
 		return 0
 	}
 
-	var count int64
+	var count int64 = 0
 	for rows.Next() {
 		rows.Scan(&count)
 	}
