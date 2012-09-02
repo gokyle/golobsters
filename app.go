@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"github.com/gokyle/gomon/monitor"
 	"golobsters/bot"
+        "golobsters/webapp"
 	"log"
 	"os"
 	"time"
@@ -17,13 +18,15 @@ import (
 // run is stubbed
 func run() {
 	go monitor.Monitor(bot.Run)
-	if "" == bot.LastUpdate() {
-		log.Println("[+] bot no updates yet")
-	} else {
-		log.Println("[+] bot last update: ", bot.LastUpdate)
-	}
 	time.Sleep(5 * 1000 * time.Millisecond)
 	log.Println("[+] bot last update: ", bot.LastUpdate)
+        for {
+       	        if "" != bot.LastUpdate() {
+		        log.Printf("[+] bot last update: %s\n", bot.LastUpdate())
+	        }
+
+                time.Sleep(15 * 1000 * time.Millisecond)
+        }
 	return
 }
 
@@ -58,5 +61,8 @@ func init() {
 }
 
 func main() {
-	run()
+	go run()
+        webapp.HttpServer()
 }
+
+
