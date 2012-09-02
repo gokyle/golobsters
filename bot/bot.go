@@ -4,7 +4,7 @@ package bot
 
 import (
 	"fmt"
-	"github.com/g2p/twitter"
+	"github.com/gokyle/twitter"
 	rss "github.com/jteeuwen/go-pkg-rss"
 	"golobsters/lobsterdb"
 	"log"
@@ -120,8 +120,8 @@ func (s story) process() error {
 // whether skipping over it or updating the database.
 func (s story) post() (err error) {
 	status := TwitterStatus(s.title, s.guid)
-
-	return fmt.Errorf("status updates aren't implemented")
+	_, err = twitterApi.Tweet(status)
+	return err
 }
 
 func getStories() error {
@@ -146,11 +146,6 @@ func Run() error {
 	log.Println("[+] bot starts")
 
 	log.Println("[+] bot initialising twitter API connection")
-	twitterApi = twitter.Twitter{
-		ConsumerKey:      os.Getenv("TW_CKEY"),
-		ConsumerSecret:   os.Getenv("TW_CSEC"),
-		OAuthToken:       os.Getenv("TW_ATOK"),
-		OAuthTokenSecret: os.Getenv("TW_ASEC")}
 
 	log.Println("[+] bot starting worker pool")
 	for i := 0; i < numWorkers; i++ {
