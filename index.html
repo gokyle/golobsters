@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <title>golobsters by gokyle</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>golobsters</h1>
+        <h2>golobsters posts new stories from lobste.rs to Twitter.</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/gokyle/golobsters/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/gokyle/golobsters/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/gokyle/golobsters" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h3>Overview</h3>
+
+<p><code>golobsters</code> is an application that posts stories from 
+<a href="https://lobste.rs">lobste.rs</a> to <a href="https://twitter.com/lobsternews">Twitter</a>.</p>
+
+<h3>Background</h3>
+
+<p>The first version was written in 92 source lines of code in Python, and is
+a fairly basic system based on SQLite. I've been learning
+<a href="http://www.golang.org">Go</a> lately, and needed a project to work on,
+preferably writing some type of webapp as that is an area I have no experience
+in. Ergo, the decision to rewrite lobsterpie in Go.</p>
+
+<h3>Architecture</h3>
+
+<p><code>golobsters</code> is comprised of two main components, <code>bot</code> (the backend) and
+<code>frontend</code>. The backend employs a worker pool using goroutines and channels,
+while the frontend simply displays the last time the bot updated.</p>
+
+<p>The backend starts up the worker pool, which communicate via a channel for
+new stories. This channel is written to by the RSS feed parser, which is in
+a separate goroutine. When the RSS feed is updated, it reads the entries,
+converts them to the internal data structure that represents a story, and
+writes that to the channel. The next available worker picks it up, checks
+whether the story has already been posted, and if not, posts the story to
+Twitter and marks the story as read in the database. Reading from a channel
+blocks, so each worker essentially sleeps while waiting for new stories.</p>
+
+<h3>Deployment</h3>
+
+<p><code>golobsters</code> currently runs on <a href="https://www.heroku.com">Heroku</a>, and uses
+a <a href="http://www.postgres.org">Postgres</a> database stored on my postgres VPS. As
+this application effectively only has one user, the transaction cost isn't
+an issue.</p>
+
+<p>I had originally wanted to use <a href="https://www.redis.io">Redis</a> as my datastore,
+but Heroku's Redis addon costs money. This app generates no revenue, so I
+didn't want to end up paying for keeping it running; Redis also requires
+an SSL tunnel in order to communicate securely with remote datastores which
+would end up being a hassle to setup. I already had a VPS set up with Postgres,
+so I ended up just using that. It is overkill, as the table merely stores the
+guid of the story, but the infrastructure was already in place.</p>
+
+<p>I am using the Heroku Go buildpack, which so far seems to run pretty smoothly;
+setting up the deployment to Heroku was pretty easy and very
+<a href="https://gist.github.com/299535bbf56bf3016cba">straightforward</a>.</p>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
