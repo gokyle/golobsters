@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"github.com/gokyle/gomon/monitor"
 	"golobsters/bot"
-        "golobsters/webapp"
+	"golobsters/webapp"
 	"log"
 	"os"
 	"time"
@@ -20,13 +20,13 @@ func run() {
 	go monitor.Monitor(bot.Run)
 	time.Sleep(5 * 1000 * time.Millisecond)
 	log.Println("[+] bot last update: ", bot.LastUpdate)
-        for {
-       	        if "" != bot.LastUpdate() {
-		        log.Printf("[+] bot last update: %s\n", bot.LastUpdate())
-	        }
+	for {
+		if "" != bot.LastUpdate() {
+			log.Printf("[+] bot last update: %s\n", bot.LastUpdate())
+		}
 
-                time.Sleep(15 * 1000 * time.Millisecond)
-        }
+		time.Sleep(15 * 1000 * time.Millisecond)
+	}
 	return
 }
 
@@ -58,14 +58,12 @@ func init() {
 		log.Fatal("[!] error configuring monitor: mail not configured")
 	}
 
-        if !monitor.PushoverEnabled() {
-                log.Fatal("[!] error configuring monitor: pushover not configured")
-        }
+	if !monitor.PushoverEnabled() {
+		log.Fatal("[!] error configuring monitor: pushover not configured")
+	}
 }
 
 func main() {
 	go run()
-        webapp.HttpServer()
+	webapp.HttpServer()
 }
-
-

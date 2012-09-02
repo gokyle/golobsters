@@ -8,6 +8,7 @@ import (
 	rss "github.com/jteeuwen/go-pkg-rss"
 	"golobsters/lobsterdb"
 	"log"
+	"os"
 	"strings"
 	"time"
 )
@@ -111,7 +112,7 @@ func (s story) process() error {
 		}
 	}
 
-        log.Println("[+] bot successful update")
+	log.Println("[+] bot successful update")
 	return nil
 }
 
@@ -147,6 +148,12 @@ func Run() error {
 	log.Println("[+] bot starts")
 
 	log.Println("[+] bot initialising twitter API connection")
+	twitterApi = twitter.Twitter{
+		ConsumerKey:      os.Getenv("TW_CKEY"),
+		ConsumerSecret:   os.Getenv("TW_CSEC"),
+		OAuthToken:       os.Getenv("TW_ATOK"),
+		OAuthTokenSecret: os.Getenv("TW_ASEC"),
+	}
 
 	log.Println("[+] bot starting worker pool")
 	for i := 0; i < numWorkers; i++ {
