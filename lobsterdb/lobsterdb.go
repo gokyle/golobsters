@@ -80,3 +80,24 @@ func PostStory(guid string) error {
 
 	return nil
 }
+
+func CountStories() int64 {
+	db, err := sql.Open("postgres", ConnStringFromEnv())
+	if err != nil {
+		log.Println("[!] lobsterdb couldn't open database connection")
+		return 0
+	}
+
+	rows, err := db.Query("select count(*) from posted")
+	if err != nil {
+		log.Println("[!] lobsterdb select count failed")
+		return 0
+	}
+
+	var count int64
+	for rows.Next() {
+		rows.Scan(&count)
+	}
+
+	return count
+}
