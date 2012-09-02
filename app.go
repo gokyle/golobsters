@@ -9,27 +9,12 @@ import (
 	"fmt"
 	"github.com/gokyle/gomon/monitor"
 	"golobsters/bot"
-	"golobsters/webapp"
+	"golobsters/frontend"
 	"log"
 	"os"
-	"time"
 )
 
 // run is stubbed
-func run() {
-	go monitor.Monitor(bot.Run)
-	time.Sleep(5 * 1000 * time.Millisecond)
-	log.Println("[+] bot last update: ", bot.LastUpdate)
-	for {
-		if "" != bot.LastUpdate() {
-			log.Printf("[+] bot last update: %s\n", bot.LastUpdate())
-		}
-
-		time.Sleep(15 * 1000 * time.Millisecond)
-	}
-	return
-}
-
 func validate_env_var(name string) bool {
 	value := os.Getenv(name)
 	if value == "" {
@@ -64,6 +49,6 @@ func init() {
 }
 
 func main() {
-	go run()
-	webapp.HttpServer()
+	go monitor.Monitor(bot.Run)
+	frontend.HttpServer()
 }
