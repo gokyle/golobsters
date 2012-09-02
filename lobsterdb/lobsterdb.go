@@ -31,25 +31,24 @@ func StoryPosted(guid string) (bool, error) {
 		return true, err
 	}
 	defer db.Close()
-        log.Println("[+] lobsterdb connected to database (preparing select)")
+	log.Println("[+] lobsterdb connected to database (preparing select)")
 
-        log.Printf("\t[*] select posted from posted where guid=%s\n", guid)
 	rows, err := db.Query("select posted from posted where guid=$1", guid)
 	if err != nil {
 		log.Printf("[!] lobsterdb select error: %s", err)
 		return true, err
 	}
 
-        log.Println("[+] lobsterdb select query completed, retrieving results")
-        row_count := 0
-        for rows.Next() {
-                row_count++
-                log.Printf("\t[*] row %d\n", row_count)
-        }
+	log.Println("[+] lobsterdb select query completed, retrieving results")
+	row_count := 0
+	for rows.Next() {
+		row_count++
+		log.Printf("\t[*] row %d\n", row_count)
+	}
 
 	if row_count > 1 {
 		log.Printf("[!] lobsterdb %s has more than one row", guid)
-	} else if row_count == 0 { 
+	} else if row_count == 0 {
 		return false, nil
 	}
 
@@ -65,21 +64,20 @@ func PostStory(guid string) error {
 		return err
 	}
 	defer db.Close()
-        log.Printf("[+] lobsterdb connected to database (preparing insert)")
+	log.Printf("[+] lobsterdb connected to database (preparing insert)")
 
+	res, err := db.Exec("insert into posted (guid, posted) values ($1, $2)",
+		guid, true)
+	if err != nil {
+		log.Printf("[!] lobsterdb couldn't insert into database",
+			guid)
+		return err
+	}
 
-        res, err := db.Exec("insert into posted (guid, posted) values ($1, $2)",
-                            guid, true)
-        if err != nil {
-                log.Printf("[!] lobsterdb couldn't insert into database",
-                    guid)
-                return err
-        }
+	if n, _ := res.RowsAffected(); n == 0 {
+		log.Printf("[!] lobsterdb insert affects 0 rows")
+		return fmt.Errorf("insert affects 0 rows")
+	}
 
-        if n, _ := res.RowsAffected(); n == 0 {
-                log.Printf("[!] lobsterdb insert affects 0 rows")
-                return fmt.Errorf("insert affects 0 rows")
-        }
-
-        return nil
+	return nil
 }
