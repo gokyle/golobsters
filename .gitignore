@@ -2,3 +2,4 @@
 *.db
 *_env.sh
 tools/secret
+*.json
