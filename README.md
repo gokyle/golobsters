@@ -4,6 +4,9 @@
 `golobsters` is an application that posts stories from 
 [lobste.rs](https://lobste.rs) to [Twitter](https://twitter.com/lobsternews).
 
+There is an experimental [web interface](http://lobsters.kyleisom.net)
+where I am learning how to do that type of work in Go.
+
 ### Background
 The first version was written in 92 source lines of code in Python, and is
 a fairly basic system based on SQLite. I've been learning
