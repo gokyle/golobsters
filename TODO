@@ -1,0 +1,15 @@
+TODO:
+
+    [ ] experiment with database workers to minimise connection times to db
+        (connecting to DB for each call seems expensive)
+    [ ] look into connection pooling for postgres
+    [ ] improved front end:
+            [ ] more presentable ("prettier") front end
+            [ ] look at enabling accounts:
+                    [ ] favouriting posts
+                    [ ] pushover on new posts
+                    note: this may be unnecessary (i.e. would people actually 
+                    want it), but would be good experience at writing webapp
+                    code.
+
+            
