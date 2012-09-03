@@ -3,6 +3,7 @@
 package bot
 
 import (
+        "database/sql"
 	"fmt"
 	"github.com/gokyle/twitter"
 	rss "github.com/jteeuwen/go-pkg-rss"
@@ -14,8 +15,7 @@ import (
 )
 
 // urls
-var feedUri = "https://lobste.rs/rss"
-var newUri = "https://lobste.rs/newest.rss"
+var feedUri = os.Getenv("RSS_FEED")
 
 // 140 characters - length of a t.co link
 const maxTwitterStatus = 115
@@ -86,8 +86,8 @@ func ADNStatus(title string, link string) string {
 // Given an RSS feed item, determine whether it exists in the database and
 // if not, post it. This is designed such that it can be run from a
 // goroutine.
-func (s story) process() error {
-	if posted, err := lobsterdb.StoryPosted(s.guid); err != nil {
+func (s story) process(db *sql.DB) error {
+	if posted, err := lobsterdb.StoryPosted(db, s.guid); err != nil {
 		log.Printf("[!] bot StoryHandler failure: %s\n", err)
 		return err
 	} else if posted {
@@ -99,13 +99,13 @@ func (s story) process() error {
 	if err := s.post(); err != nil {
 		log.Printf("[!] error posting status: %s\n", err)
 		return err
-	} else if err = lobsterdb.PostStory(s.guid); err != nil {
+	} else if err = lobsterdb.PostStory(db, s.guid); err != nil {
 		// once we've posted to twitter, we need to make sure
 		// the database is updated!
 		var errors int64 = 1
 		for {
 			log.Printf("[!] %d errors posting to database", errors)
-			if err = lobsterdb.PostStory(s.guid); err != nil {
+			if err = lobsterdb.PostStory(db, s.guid); err != nil {
 				break
 			}
 			errors++
@@ -168,9 +168,14 @@ func Run() error {
 }
 
 func worker(id int8) {
+        db, err := lobsterdb.ConnectFromEnv()
+        if err != nil {
+	        log.Println("[+] lobsterdb connected to database (preparing select)")
+        }
+        defer db.Close()
 	for {
 		s := <-newStories
-		err := s.process()
+		err := s.process(db)
 		if err != nil {
 			log.Printf("[!] worker %d error processing story: %s",
 				id, err)
