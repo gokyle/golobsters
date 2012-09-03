@@ -34,6 +34,7 @@ var twitterApi twitter.Twitter
 type story struct {
 	title string
 	guid  string
+	link  string
 }
 
 func LastUpdate() string {
@@ -45,7 +46,7 @@ func LastUpdate() string {
 }
 
 func Story(item *rss.Item) story {
-	s := story{item.Title, item.Guid}
+	s := story{item.Title, item.Guid, item.Links[0].Href}
 	return s
 }
 
