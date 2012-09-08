@@ -5,9 +5,9 @@ package bot
 import (
 	"database/sql"
 	"fmt"
+	"github.com/gokyle/golobsters/dbase"
 	"github.com/gokyle/twitter"
 	rss "github.com/jteeuwen/go-pkg-rss"
-	"github.com/gokyle/golobsters/dbase"
 	"log"
 	"os"
 	"strings"
@@ -124,6 +124,7 @@ func (s story) process(db *sql.DB) error {
 func (s story) post() (err error) {
 	status := TwitterStatus(s.title, s.guid)
 	_, err = twitterApi.Tweet(status)
+        log.Println("[-] err: ", err)
 	return err
 }
 
