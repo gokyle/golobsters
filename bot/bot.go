@@ -195,4 +195,5 @@ func txNewItems(feed *rss.Feed, ch *rss.Channel, newitems []*rss.Item) {
 	for _, item := range newitems {
 		newStories <- Story(item)
 	}
+        pushover.Notify(identity, "finished sending RSS items to channel")
 }
