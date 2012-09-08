@@ -6,7 +6,6 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/gokyle/golobsters/dbase"
-	"github.com/gokyle/gopush/pushover"
 	"github.com/gokyle/twitter"
 	rss "github.com/jteeuwen/go-pkg-rss"
 	"log"
@@ -188,12 +187,8 @@ func worker(id int8) {
 
 func txNewItems(feed *rss.Feed, ch *rss.Channel, newitems []*rss.Item) {
 	log.Printf("[+] bot %d new stories on %s\n", len(newitems), feed.Url)
-	identity := pushover.Authenticate(os.Getenv("PO_APIKEY"),
-		os.Getenv("PO_USER"))
-	pushover.Notify(identity, "new RSS items")
 	lastUpdate = time.Now()
 	for _, item := range newitems {
 		newStories <- Story(item)
 	}
-        pushover.Notify(identity, "finished sending RSS items to channel")
 }
