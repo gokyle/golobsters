@@ -8,8 +8,8 @@ package main
 import (
 	"fmt"
 	"github.com/gokyle/gomon/monitor"
-	"golobsters/bot"
-	"golobsters/frontend"
+	"github.com/gokyle/golobsters/bot"
+	"github.com/gokyle/golobsters/frontend"
 	"log"
 	"os"
 )
