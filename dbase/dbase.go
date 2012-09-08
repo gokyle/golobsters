@@ -1,5 +1,5 @@
-// lobsterdb implements the database interactivity for the lobster bot.
-package lobsterdb
+// dbase implements the database interactivity for the lobster bot.
+package dbase
 
 import (
 	"database/sql"
@@ -21,12 +21,12 @@ func ConnectFromEnv() (*sql.DB, error) {
 		os.Getenv("PG_SSLMODE"))
 	db, err := sql.Open("postgres", conn_string)
 	if err != nil {
-		log.Printf("[!] lobsterdb couldn't open database connection: %s",
+		log.Printf("[!] dbase couldn't open database connection: %s",
 			err)
 		db = nil
 	}
 
-        return db, err
+	return db, err
 }
 
 // StoryPosted is used to determine whether a story has been posted or not. It 
@@ -35,18 +35,18 @@ func StoryPosted(db *sql.DB, guid string) (bool, error) {
 
 	rows, err := db.Query("select posted from posted where guid=$1", guid)
 	if err != nil {
-		log.Printf("[!] lobsterdb select error: %s", err)
+		log.Printf("[!] dbase select error: %s", err)
 		return true, err
 	}
 
-	log.Println("[+] lobsterdb select query completed, retrieving results")
+	log.Println("[+] dbase select query completed, retrieving results")
 	row_count := 0
 	for rows.Next() {
 		row_count++
 	}
 
 	if row_count > 1 {
-		log.Printf("[!] lobsterdb %s has more than one row", guid)
+		log.Printf("[!] dbase %s has more than one row", guid)
 	} else if row_count == 0 {
 		return false, nil
 	}
@@ -56,18 +56,18 @@ func StoryPosted(db *sql.DB, guid string) (bool, error) {
 
 // PostStory is used to mark a story as posted in the database.
 func PostStory(db *sql.DB, guid string) error {
-	log.Printf("[+] lobsterdb connected to database (preparing insert)")
+	log.Printf("[+] dbase connected to database (preparing insert)")
 
 	res, err := db.Exec("insert into posted (guid, posted) values ($1, $2)",
 		guid, true)
 	if err != nil {
-		log.Printf("[!] lobsterdb couldn't insert into database",
+		log.Printf("[!] dbase couldn't insert into database",
 			guid)
 		return err
 	}
 
 	if n, _ := res.RowsAffected(); n == 0 {
-		log.Printf("[!] lobsterdb insert affects 0 rows")
+		log.Printf("[!] dbase insert affects 0 rows")
 		return fmt.Errorf("insert affects 0 rows")
 	}
 
@@ -77,7 +77,7 @@ func PostStory(db *sql.DB, guid string) error {
 func CountStories(db *sql.DB) int64 {
 	rows, err := db.Query("select count(*) from posted")
 	if err != nil {
-		log.Println("[!] lobsterdb select count failed")
+		log.Println("[!] dbase select count failed")
 		return 0
 	}
 

@@ -3,11 +3,11 @@
 package bot
 
 import (
-        "database/sql"
+	"database/sql"
 	"fmt"
 	"github.com/gokyle/twitter"
 	rss "github.com/jteeuwen/go-pkg-rss"
-	"golobsters/lobsterdb"
+	"github.com/gokyle/golobsters/dbase"
 	"log"
 	"os"
 	"strings"
@@ -87,7 +87,7 @@ func ADNStatus(title string, link string) string {
 // if not, post it. This is designed such that it can be run from a
 // goroutine.
 func (s story) process(db *sql.DB) error {
-	if posted, err := lobsterdb.StoryPosted(db, s.guid); err != nil {
+	if posted, err := dbase.StoryPosted(db, s.guid); err != nil {
 		log.Printf("[!] bot StoryHandler failure: %s\n", err)
 		return err
 	} else if posted {
@@ -99,13 +99,13 @@ func (s story) process(db *sql.DB) error {
 	if err := s.post(); err != nil {
 		log.Printf("[!] error posting status: %s\n", err)
 		return err
-	} else if err = lobsterdb.PostStory(db, s.guid); err != nil {
+	} else if err = dbase.PostStory(db, s.guid); err != nil {
 		// once we've posted to twitter, we need to make sure
 		// the database is updated!
 		var errors int64 = 1
 		for {
 			log.Printf("[!] %d errors posting to database", errors)
-			if err = lobsterdb.PostStory(db, s.guid); err != nil {
+			if err = dbase.PostStory(db, s.guid); err != nil {
 				break
 			}
 			errors++
@@ -168,11 +168,11 @@ func Run() error {
 }
 
 func worker(id int8) {
-        db, err := lobsterdb.ConnectFromEnv()
-        if err != nil {
-	        log.Println("[+] lobsterdb connected to database (preparing select)")
-        }
-        defer db.Close()
+	db, err := dbase.ConnectFromEnv()
+	if err != nil {
+		log.Println("[+] bot connected to database (preparing select)")
+	}
+	defer db.Close()
 	for {
 		s := <-newStories
 		err := s.process(db)
