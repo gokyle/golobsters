@@ -6,8 +6,8 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/gokyle/golobsters/dbase"
+	"github.com/gokyle/gopush/pushover"
 	"github.com/gokyle/twitter"
-        "github.com/gokyle/gopush/pushover"
 	rss "github.com/jteeuwen/go-pkg-rss"
 	"log"
 	"os"
@@ -97,6 +97,7 @@ func (s story) process(db *sql.DB) error {
 	}
 
 	// story hasn't been posted
+	log.Printf("[+] bot worker posting story\n")
 	if err := s.post(); err != nil {
 		log.Printf("[!] error posting status: %s\n", err)
 		return err
