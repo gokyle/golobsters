@@ -23,9 +23,6 @@ const maxADNStatus = 256
 
 // update variables
 var lastUpdate time.Time
-var UpdateInterval, _ = time.ParseDuration("2s")
-
-//var UpdateInterval, _ = time.ParseDuration("15m")
 
 var numWorkers = 3
 var newStories = make(chan story, 5)
