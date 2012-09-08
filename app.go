@@ -7,9 +7,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/gokyle/gomon/monitor"
 	"github.com/gokyle/golobsters/bot"
 	"github.com/gokyle/golobsters/frontend"
+	"github.com/gokyle/gomon/monitor"
 	"log"
 	"os"
 )
@@ -37,6 +37,7 @@ func validate_environment() {
 }
 
 func init() {
+	log.Println("[+] initialising application")
 	validate_environment()
 	monitor.ConfigFromEnv()
 	if !monitor.EmailEnabled() {
@@ -49,6 +50,8 @@ func init() {
 }
 
 func main() {
+	log.Println("[+] app starting")
 	go monitor.Monitor(bot.Run)
 	frontend.HttpServer()
+	log.Println("[+] app stopping")
 }
