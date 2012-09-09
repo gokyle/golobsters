@@ -180,6 +180,7 @@ func worker(id int8) {
 				id, err)
 		}
 	}
+        log.Printf("[!] worker %d dies!\n", id)
 }
 
 func txNewItems(feed *rss.Feed, ch *rss.Channel, newitems []*rss.Item) {
