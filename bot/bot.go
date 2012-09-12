@@ -22,7 +22,7 @@ const maxTwitterStatus = 115
 const maxADNStatus = 256
 
 // update variables
-var lastCheck time.time
+var lastCheck time.Time
 var lastUpdate time.Time
 
 var numWorkers = 3
