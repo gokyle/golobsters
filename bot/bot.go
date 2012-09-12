@@ -22,6 +22,7 @@ const maxTwitterStatus = 115
 const maxADNStatus = 256
 
 // update variables
+var lastCheck time.time
 var lastUpdate time.Time
 
 var numWorkers = 3
@@ -34,12 +35,22 @@ type story struct {
 	link  string
 }
 
+// Returns a string of the last time a story was tweeted.
 func LastUpdate() string {
 	noTime := new(time.Time)
 	if lastUpdate == *noTime {
 		return ""
 	}
 	return lastUpdate.String()
+}
+
+// Returns a string of the last time the feed was checked.
+func LastCheck() string {
+	noTime := new(time.Time)
+	if lastCheck == *noTime {
+		return ""
+	}
+	return lastCheck.String()
 }
 
 func Story(item *rss.Item) story {

@@ -13,6 +13,7 @@ func rootPage(w http.ResponseWriter, req *http.Request) {
 
 	if err == nil {
 		stats += "stats\n=====\n"
+		stats += fmt.Sprintf("last feed check: %s\n", bot.LastCheck())
 		stats += "last tweet: " + bot.LastUpdate()
 		stats += fmt.Sprintf("\nstories posted: %d\n", dbase.CountStories(db))
 	} else {
