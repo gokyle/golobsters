@@ -55,7 +55,7 @@ func LastCheck() string {
 }
 
 // Returns the time the bot was started this time.
-func TimeStarted() string {
+func TimeStarted() time.Time {
 	return timeStarted
 }
 
