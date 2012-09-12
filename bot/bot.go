@@ -24,6 +24,7 @@ const maxADNStatus = 256
 // update variables
 var lastCheck time.Time
 var lastUpdate time.Time
+var timeStarted time.Time
 
 var numWorkers = 3
 var newStories = make(chan story, 5)
@@ -51,6 +52,11 @@ func LastCheck() string {
 		return ""
 	}
 	return lastCheck.String()
+}
+
+// Returns the time the bot was started this time.
+func TimeStarted() string {
+	return timeStarted
 }
 
 func Story(item *rss.Item) story {
@@ -159,6 +165,7 @@ func getStories() error {
 // gomon. When Run() is called, the environment should already be set up.
 func Run() error {
 	log.Println("[+] bot starts")
+	timeStarted = time.Now()
 
 	log.Println("[+] bot initialising twitter API connection")
 	twitterApi = twitter.Twitter{
