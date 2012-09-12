@@ -15,10 +15,10 @@ func rootPage(w http.ResponseWriter, req *http.Request) {
 	if err == nil {
 		started := bot.TimeStarted()
 		stats += "stats\n=====\n"
-		stats += fmt.Sprintf("start time: %s (%s)\n", started.String(),
+		stats += fmt.Sprintf("     start time: %s (run time %s)\n", started.String(),
 			time.Since(started).String())
 		stats += fmt.Sprintf("last feed check: %s\n", bot.LastCheck())
-		stats += "last tweet: " + bot.LastUpdate()
+		stats += "     last tweet: " + bot.LastUpdate()
 		stats += fmt.Sprintf("\nstories posted: %d\n", dbase.CountStories(db))
 	} else {
 		stats += "couldn't connect to database: " + err.Error()
