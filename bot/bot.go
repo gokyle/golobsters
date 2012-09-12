@@ -122,6 +122,7 @@ func (s story) process(db *sql.DB) error {
 		}
 	}
 
+	lastUpdate = time.Now()
 	log.Println("[+] bot successful update")
 	return nil
 }
@@ -196,7 +197,7 @@ func worker(id int8) {
 
 func txNewItems(feed *rss.Feed, ch *rss.Channel, newitems []*rss.Item) {
 	log.Printf("[+] bot %d new stories on %s\n", len(newitems), feed.Url)
-	lastUpdate = time.Now()
+	lastCheck = time.Now()
 	for _, item := range newitems {
 		newStories <- Story(item)
 	}
