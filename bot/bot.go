@@ -140,7 +140,6 @@ func (s story) process(db *sql.DB) error {
 func (s story) post() (err error) {
 	status := TwitterStatus(s.title, s.guid)
 	_, err = twitterApi.Tweet(status)
-	log.Println("[-] err: ", err)
 	return err
 }
 
