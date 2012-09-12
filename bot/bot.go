@@ -148,6 +148,7 @@ func getStories() error {
 			return err
 		}
 
+		lastCheck = time.Now()
 		<-time.After(time.Duration(feed.SecondsTillUpdate() * 1e9))
 	}
 
@@ -192,12 +193,11 @@ func worker(id int8) {
 				id, err)
 		}
 	}
-        log.Printf("[!] worker %d dies!\n", id)
+	log.Printf("[!] worker %d dies!\n", id)
 }
 
 func txNewItems(feed *rss.Feed, ch *rss.Channel, newitems []*rss.Item) {
 	log.Printf("[+] bot %d new stories on %s\n", len(newitems), feed.Url)
-	lastCheck = time.Now()
 	for _, item := range newitems {
 		newStories <- Story(item)
 	}
