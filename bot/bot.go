@@ -17,8 +17,8 @@ import (
 // urls
 var feedUri = os.Getenv("RSS_FEED")
 
-// 140 characters - length of a t.co link
-const maxTwitterStatus = 115
+// 140 characters - length of two t.co links (23) - two newlines
+const maxTwitterStatus = 92
 const maxADNStatus = 256
 
 // update variables
@@ -84,17 +84,18 @@ func Status(message string, length int) string {
 }
 
 // TwitterStatus returns an appropriate status for a Twitter status update 
-// given a title and link.
-func TwitterStatus(title string, link string) string {
-	return fmt.Sprintf("%s %s", Status(title, maxTwitterStatus), link)
+// given a title, comments link and link to the actual story.
+func TwitterStatus(title string, comlink string, storylink string) string {
+	return fmt.Sprintf("%s\n%s\n%s", Status(title, maxTwitterStatus),
+		storylink, comlink)
 }
 
 // ADNStatus returns an appropriate status for an App Dot Net status update 
-// given a title and link.
-func ADNStatus(title string, link string) string {
+// given a title and comments link.
+func ADNStatus(title string, comlink string) string {
 	// ADN doesn't use automatic URL-shortening like twitter
 	length := maxADNStatus - len(link) - 1
-	return fmt.Sprintf("%s %s", Status(title, length), link)
+	return fmt.Sprintf("%s %s", Status(title, length), comlink)
 }
 
 // Given an RSS feed item, determine whether it exists in the database and
@@ -138,7 +139,7 @@ func (s story) process(db *sql.DB) error {
 // A nil return means the appropriate action for the story has been taken,
 // whether skipping over it or updating the database.
 func (s story) post() (err error) {
-	status := TwitterStatus(s.title, s.guid)
+	status := TwitterStatus(s.title, s.guid, s.link)
 	_, err = twitterApi.Tweet(status)
 	return err
 }
