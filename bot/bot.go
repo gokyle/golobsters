@@ -94,7 +94,7 @@ func TwitterStatus(title string, comlink string, storylink string) string {
 // given a title and comments link.
 func ADNStatus(title string, comlink string) string {
 	// ADN doesn't use automatic URL-shortening like twitter
-	length := maxADNStatus - len(link) - 1
+	length := maxADNStatus - len(comlink) - 1
 	return fmt.Sprintf("%s %s", Status(title, length), comlink)
 }
 
