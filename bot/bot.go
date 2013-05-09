@@ -73,8 +73,11 @@ func Status(message string, length int) string {
 	words := strings.Fields(message)
 	status := ""
 	for _, word := range words {
-		if len(status)+len(word)+1 < (len(status) - 3) {
-			status = status + " " + word
+		if len(status)+len(word)+1 < (length - 3) {
+			if status != "" {
+				status += " "
+			}
+			status += word
 		} else {
 			break
 		}
