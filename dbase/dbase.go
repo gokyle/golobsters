@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-// ConnStringFromEnv loads the database credentials from the environment. 
+// ConnStringFromEnv loads the database credentials from the environment.
 func ConnectFromEnv() (*sql.DB, error) {
 	conn_string := fmt.Sprintf(
 		"dbname=%s user=%s password=%s host=%s port=%s sslmode=%s",
@@ -29,7 +29,7 @@ func ConnectFromEnv() (*sql.DB, error) {
 	return db, err
 }
 
-// StoryPosted is used to determine whether a story has been posted or not. It 
+// StoryPosted is used to determine whether a story has been posted or not. It
 // is keyed to the story's id url; for example, "https://lobste.rs/s/lwrxft/"
 func StoryPosted(db *sql.DB, guid string) (bool, error) {
 

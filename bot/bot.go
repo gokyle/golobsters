@@ -86,14 +86,14 @@ func Status(message string, length int) string {
 	return status
 }
 
-// TwitterStatus returns an appropriate status for a Twitter status update 
+// TwitterStatus returns an appropriate status for a Twitter status update
 // given a title, comments link and link to the actual story.
 func TwitterStatus(title string, comlink string, storylink string) string {
 	return fmt.Sprintf("%s\n%s\n%s", Status(title, maxTwitterStatus),
 		storylink, comlink)
 }
 
-// ADNStatus returns an appropriate status for an App Dot Net status update 
+// ADNStatus returns an appropriate status for an App Dot Net status update
 // given a title and comments link.
 func ADNStatus(title string, comlink string) string {
 	// ADN doesn't use automatic URL-shortening like twitter

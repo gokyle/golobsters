@@ -11,10 +11,12 @@ import (
 	"github.com/gokyle/golobsters/frontend"
 	"github.com/gokyle/gomon/monitor"
 	"log"
+	"net/http"
 	"os"
+	"time"
 )
 
-var siteUrl = "http://lobsternews.kyleisom.net"
+var siteURL = "http://lobsternews.kyleisom.net"
 
 // run is stubbed
 func validate_env_var(name string) bool {
@@ -39,11 +41,11 @@ func validate_environment() {
 }
 
 func herokuPing() {
-        for {
-                log.Println("pinging site")
-                http.Get(siteURL)
-                <-time.After(15 * time.Minute)
-        }
+	for {
+		log.Println("pinging site")
+		http.Get(siteURL)
+		<-time.After(15 * time.Minute)
+	}
 }
 
 func init() {
