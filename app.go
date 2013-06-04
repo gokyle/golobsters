@@ -14,6 +14,8 @@ import (
 	"os"
 )
 
+var siteUrl = "http://lobsternews.kyleisom.net"
+
 // run is stubbed
 func validate_env_var(name string) bool {
 	value := os.Getenv(name)
@@ -34,6 +36,14 @@ func validate_environment() {
 				name))
 		}
 	}
+}
+
+func herokuPing() {
+        for {
+                log.Println("pinging site")
+                http.Get(siteURL)
+                <-time.After(15 * time.Minute)
+        }
 }
 
 func init() {
