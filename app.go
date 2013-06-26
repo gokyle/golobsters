@@ -64,6 +64,7 @@ func init() {
 func main() {
 	log.Println("[+] app starting")
 	go monitor.Monitor(bot.Run)
+	log.Println("[+] launching web front end")
 	frontend.HttpServer()
 	log.Println("[+] app stopping")
 }
