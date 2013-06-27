@@ -114,7 +114,7 @@ func (s story) process(db *sql.DB) error {
 	}
 
 	// story hasn't been posted
-	log.Printf("[+] bot worker posting story\n")
+	log.Printf("[+] bot worker posting story %s\n", s.guid)
 	if err := s.post(); err != nil {
 		log.Printf("[!] error posting status: %s\n", err)
 		return err
