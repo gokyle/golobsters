@@ -133,7 +133,7 @@ func (s story) process(db *sql.DB) error {
 	}
 
 	lastUpdate = time.Now()
-	log.Println("[+] bot successful update")
+	log.Printf("[+] bot successful update: pushed story %s", s.guid)
 	return nil
 }
 
