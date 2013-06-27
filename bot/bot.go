@@ -177,6 +177,7 @@ func Run() error {
 		OAuthToken:       os.Getenv("TW_ATOK"),
 		OAuthTokenSecret: os.Getenv("TW_ASEC"),
 	}
+	log.Println("[+] using Twitter API version", twitter.API_VERSION)
 
 	log.Println("[+] bot starting worker pool")
 	for i := 0; i < numWorkers; i++ {
